@@ -50,27 +50,37 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function login(Request $request)
     {
-        //
-    }
+        // 1. Validate
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // 2. Kiểm tra email + password
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Email hoặc mật khẩu không đúng.'
+            ], 401);
+        }
+
+        // 3. Tạo token (nếu bạn đã cài Sanctum)
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        // 4. Trả về thông tin + token
+        return response()->json([
+            'message' => 'Login successful',
+            'token' => $token,
+            'user' => $user
+        ]);
     }
 }

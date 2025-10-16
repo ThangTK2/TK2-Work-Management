@@ -10,7 +10,7 @@ const Register = () => {
     password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string[]>>({}); //key là string, value là mảng string
+  const [errors, setErrors] = useState<Record<string, string[]>>({}); // key là string, value là mảng string
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,12 +24,14 @@ const Register = () => {
     e.preventDefault();
     try {
       await axiosClient.post("/user/register", formData);
+      alert("Đăng ký thành công!"); // thêm thông báo sau khi đăng ký
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         setErrors(err.response.data.errors);
       } else {
         setErrors({});
-        console.error("Error registering user:", err);
+        console.error("Lỗi khi đăng ký người dùng:", err);
+        alert("Đã xảy ra lỗi khi đăng ký, vui lòng thử lại sau!");
       }
     }
   };
@@ -43,13 +45,13 @@ const Register = () => {
               aria-hidden="true"
               className="object-cover w-full h-full dark:hidden"
               src="/img/create-account-office.jpeg"
-              alt="Office"
+              alt="Văn phòng"
             />
             <img
               aria-hidden="true"
               className="hidden object-cover w-full h-full dark:block"
               src="/img/create-account-office-dark.jpeg"
-              alt="Office"
+              alt="Văn phòng (nền tối)"
             />
           </div>
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
@@ -59,20 +61,26 @@ const Register = () => {
               </h1>
               <form onSubmit={handleSubmit}>
                 <label className="block text-sm">
-                  <span className="text-gray-700 dark:text-gray-400">Tên</span>
+                  <span className="text-gray-700 dark:text-gray-400">
+                    Họ và tên
+                  </span>
                   <input
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="Jane Doe"
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 
+                    focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
+                    dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Nguyễn Văn A"
                   />
-                  {errors?.name && (
-                    <p className="text-red-500">{errors.name[0]}</p>
-                  )}
+                  <div className="min-h-[22px]">
+                    {errors.name && (
+                      <p className="text-red-500 text-sm">{errors.name[0]}</p>
+                    )}
+                  </div>
                 </label>
 
-                <label className="block mt-4 text-sm">
+                <label className="block text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
                     Email
                   </span>
@@ -80,15 +88,19 @@ const Register = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="JaneDoe@gmail.com"
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 
+                    focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
+                    dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="email@example.com"
                   />
-                  {errors?.email && (
-                    <p className="text-red-500">{errors.email[0]}</p>
-                  )}
+                  <div className="min-h-[22px]">
+                    {errors.email && (
+                      <p className="text-red-500 text-sm">{errors.email[0]}</p>
+                    )}
+                  </div>
                 </label>
 
-                <label className="block mt-4 text-sm">
+                <label className="block text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
                     Mật khẩu
                   </span>
@@ -97,15 +109,21 @@ const Register = () => {
                     type="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="***************"
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 
+                    focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
+                    dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Nhập mật khẩu"
                   />
-                  {errors?.password && (
-                    <p className="text-red-500">{errors.password[0]}</p>
-                  )}
+                  <div className="min-h-[22px]">
+                    {errors.password && (
+                      <p className="text-red-500 text-sm">
+                        {errors.password[0]}
+                      </p>
+                    )}
+                  </div>
                 </label>
 
-                <label className="block mt-4 text-sm">
+                <label className="block text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
                     Xác nhận mật khẩu
                   </span>
@@ -114,14 +132,18 @@ const Register = () => {
                     type="password"
                     value={formData.password_confirmation}
                     onChange={handleChange}
-                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                    placeholder="***************"
+                    className="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 
+                    focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
+                    dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Nhập lại mật khẩu"
                   />
                 </label>
 
                 <button
                   type="submit"
-                  className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                  className="block w-full px-4 py-2 mt-6 text-sm font-medium leading-5 
+                  text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent 
+                  rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                 >
                   Đăng ký
                 </button>
@@ -129,12 +151,13 @@ const Register = () => {
 
               <hr className="my-8" />
 
-              <p className="mt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Đã có tài khoản?{" "}
                 <Link
                   to="/user/login"
-                  className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
+                  className="font-medium text-purple-600 dark:text-purple-400 hover:underline"
                 >
-                  Already have an account? Login
+                  Đăng nhập ngay
                 </Link>
               </p>
             </div>
