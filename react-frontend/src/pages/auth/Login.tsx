@@ -125,6 +125,15 @@ const Login = () => {
                 </button>
               </form>
 
+              <div className="flex justify-end mt-2">
+                <Link
+                  to="/user/forgot-password"
+                  className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
+                >
+                  Quên mật khẩu?
+                </Link>
+              </div>
+
               <hr className="my-8" />
 
               <p className="text-sm text-gray-600 dark:text-gray-400">
