@@ -111,7 +111,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => "Chúng tôi đã gửi email đặt lại mật khẩu."
+            'message' => "Chúng tôi đã gửi email đặt lại mật khẩu. Vui lòng xác nhận."
         ], 200);
     }
 
@@ -137,7 +137,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$record) {
-            return response()->json(['message' => 'Token không hợp lệ hoặc đã hết hạn'], 400);
+            return response()->json(['message' => 'Vui lòng gửi lại yêu cầu quên mật khẩu để tiếp tục.'], 400);
         }
 
         // 3. Cập nhật mật khẩu mới

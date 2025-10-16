@@ -10,7 +10,7 @@ const Login = () => {
     password: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [errors, setErrors] = useState<Record<string, string[]>>({}); // lỗi trả về từ server
   const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,21 +23,15 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
-    setErrors({});
-
     try {
       const response = await axiosClient.post("/user/login", formData);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-
       alert("Đăng nhập thành công!");
       navigate("/tasks");
     } catch (err: any) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
-      } else if (err.response?.status === 401) {
-        setError("Email hoặc mật khẩu không đúng");
       } else {
         console.error(err);
         setError("Đã xảy ra lỗi, vui lòng thử lại sau!");
@@ -60,7 +54,7 @@ const Login = () => {
               aria-hidden="true"
               className="hidden object-cover w-full h-full dark:block"
               src="/img/login-office-dark.jpeg"
-              alt="Văn phòng (nền tối)"
+              alt="Văn phòng"
             />
           </div>
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
@@ -85,14 +79,12 @@ const Login = () => {
                     placeholder="email@example.com"
                   />
                 </label>
-                <div className="min-h-[20px]">
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email[0]}</p>
-                  )}
-                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email[0]}</p>
+                )}
 
                 {/* Mật khẩu */}
-                <label className="block text-sm">
+                <label className="block mt-4 text-sm">
                   <span className="text-gray-700 dark:text-gray-400">
                     Mật khẩu
                   </span>
@@ -107,16 +99,14 @@ const Login = () => {
                     placeholder="Nhập mật khẩu"
                   />
                 </label>
-                <div className="min-h-[20px]">
-                  {errors.password && (
-                    <p className="text-red-500 text-sm">{errors.password[0]}</p>
-                  )}
-                  {error && <p className="text-red-500 text-sm">{error}</p>}
-                </div>
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password[0]}</p>
+                )}
+                {error && <p className="text-red-500 text-sm">{error}</p>}
 
                 <button
                   type="submit"
-                  className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center 
+                  className="block w-full px-4 py-2 mt-8 text-sm font-medium leading-5 text-center 
                   text-white transition-colors duration-150 bg-purple-600 border border-transparent 
                   rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none 
                   focus:shadow-outline-purple"
@@ -125,7 +115,7 @@ const Login = () => {
                 </button>
               </form>
 
-              <div className="flex justify-end mt-2">
+              <div className="flex justify-end mt-4">
                 <Link
                   to="/user/forgot-password"
                   className="text-sm text-purple-600 dark:text-purple-400 hover:underline"

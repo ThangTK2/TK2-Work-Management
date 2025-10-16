@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axiosClient from "../../lib/axiosClient";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
   const [params] = useSearchParams();
+
   const token = params.get("token");
   const email = params.get("email");
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -24,7 +26,12 @@ const ResetPassword = () => {
         password,
         password_confirmation: passwordConfirm,
       });
-      setMessage(res.data.message);
+
+      setMessage(res.data.message || "Đặt lại mật khẩu thành công!");
+
+      setTimeout(() => {
+        navigate("/user/login");
+      }, 1000);
     } catch (err: any) {
       setError(err.response?.data?.message || "Lỗi đặt lại mật khẩu");
     }
@@ -48,20 +55,18 @@ const ResetPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="block w-full mt-1 text-sm form-input"
-                required
               />
             </label>
 
-            <label className="block text-sm mt-3">
+            <label className="block text-sm mt-4">
               <span className="text-gray-700 dark:text-gray-400">
-                Xác nhận mật khẩu
+                Xác nhận mật khẩu mới
               </span>
               <input
                 type="password"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
                 className="block w-full mt-1 text-sm form-input"
-                required
               />
             </label>
 
@@ -76,17 +81,11 @@ const ResetPassword = () => {
 
             <button
               type="submit"
-              className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg hover:bg-purple-700"
+              className="block w-full px-4 py-2 mt-8 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg hover:bg-purple-700"
             >
               Đặt lại mật khẩu
             </button>
           </form>
-
-          <p className="mt-4 text-center text-sm">
-            <Link to="/user/login" className="text-purple-600 hover:underline">
-              Quay lại đăng nhập
-            </Link>
-          </p>
         </div>
       </div>
     </div>

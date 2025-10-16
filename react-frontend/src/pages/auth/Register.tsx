@@ -31,7 +31,6 @@ const Register = () => {
       } else {
         setErrors({});
         console.error("Lỗi khi đăng ký người dùng:", err);
-        alert("Đã xảy ra lỗi khi đăng ký, vui lòng thử lại sau!");
       }
     }
   };
@@ -51,7 +50,7 @@ const Register = () => {
               aria-hidden="true"
               className="hidden object-cover w-full h-full dark:block"
               src="/img/create-account-office-dark.jpeg"
-              alt="Văn phòng (nền tối)"
+              alt="Văn phòng"
             />
           </div>
           <div className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
@@ -60,7 +59,7 @@ const Register = () => {
                 Đăng ký
               </h1>
               <form onSubmit={handleSubmit}>
-                <label className="block text-sm">
+                <label className="block text-sm mt-4">
                   <span className="text-gray-700 dark:text-gray-400">
                     Họ và tên
                   </span>
@@ -73,14 +72,12 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nguyễn Văn A"
                   />
-                  <div className="min-h-[22px]">
-                    {errors.name && (
-                      <p className="text-red-500 text-sm">{errors.name[0]}</p>
-                    )}
-                  </div>
+                  {errors.name && (
+                    <p className="text-red-500 text-sm">{errors.name[0]}</p>
+                  )}
                 </label>
 
-                <label className="block text-sm">
+                <label className="block text-sm mt-4">
                   <span className="text-gray-700 dark:text-gray-400">
                     Email
                   </span>
@@ -93,14 +90,12 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="email@example.com"
                   />
-                  <div className="min-h-[22px]">
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">{errors.email[0]}</p>
-                    )}
-                  </div>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email[0]}</p>
+                  )}
                 </label>
 
-                <label className="block text-sm">
+                <label className="block text-sm mt-4">
                   <span className="text-gray-700 dark:text-gray-400">
                     Mật khẩu
                   </span>
@@ -114,16 +109,12 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nhập mật khẩu"
                   />
-                  <div className="min-h-[22px]">
-                    {errors.password && (
-                      <p className="text-red-500 text-sm">
-                        {errors.password[0]}
-                      </p>
-                    )}
-                  </div>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm">{errors.password[0]}</p>
+                  )}
                 </label>
 
-                <label className="block text-sm">
+                <label className="block text-sm mt-4">
                   <span className="text-gray-700 dark:text-gray-400">
                     Xác nhận mật khẩu
                   </span>
@@ -141,7 +132,7 @@ const Register = () => {
 
                 <button
                   type="submit"
-                  className="block w-full px-4 py-2 mt-6 text-sm font-medium leading-5 
+                  className="block w-full px-4 py-2 mt-8 text-sm font-medium leading-5 
                   text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent 
                   rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                 >
