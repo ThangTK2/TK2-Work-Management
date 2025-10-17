@@ -4,14 +4,14 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 
-interface Task {
+type Task = {
   id: number;
   title: string;
   description: string;
   status: string;
   priority: string;
   due_date: string | null;
-}
+};
 
 const EditTask = () => {
   const { id } = useParams();

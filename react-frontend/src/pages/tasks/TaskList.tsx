@@ -4,7 +4,7 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 
-interface Task {
+type Task = {
   id: number;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ interface Task {
   assignedUser?: { name: string } | null;
   creator?: { name: string } | null;
   created_at: string;
-}
+};
 
 const TaskList = () => {
   const navigate = useNavigate();
