@@ -49,6 +49,23 @@ const UserList = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
+  const handleDelete = async (id: number) => {
+    if (!confirm("Bạn có chắc muốn xóa người dùng này không?")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      await axiosClient.delete(`/users/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      // Cập nhật lại danh sách sau khi xóa
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+      alert("Xóa người dùng thành công!");
+    } catch (err: any) {
+      console.error(err.response?.data || err);
+      alert("Xóa thất bại!");
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       <SideBar />
@@ -111,6 +128,12 @@ const UserList = () => {
                                 }
                               >
                                 Sửa
+                              </button>
+                              <button
+                                className="text-red-600 mr-2"
+                                onClick={() => handleDelete(user.id)}
+                              >
+                                Xóa
                               </button>
                             </div>
                           </td>
