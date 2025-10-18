@@ -31,17 +31,17 @@ const EditTask = () => {
   const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
 
   const STATUS_OPTIONS = [
-    { value: "new", label: "Mới" },
-    { value: "in_progress", label: "Đang tiến hành" },
-    { value: "pending", label: "Đang chờ" },
-    { value: "completed", label: "Hoàn thành" },
-    { value: "expired", label: "Hết hạn" },
+    { value: "new", label: "New" },
+    { value: "in_progress", label: "In Progress" },
+    { value: "pending", label: "Pending" },
+    { value: "completed", label: "Completed" },
+    { value: "expired", label: "Expired" },
   ];
 
   const PRIORITY_OPTIONS = [
-    { value: "low", label: "Thấp" },
-    { value: "medium", label: "Trung bình" },
-    { value: "high", label: "Cao" },
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
   ];
 
   // Load task theo ID
@@ -180,24 +180,6 @@ const EditTask = () => {
                 )}
               </label>
 
-              {/* Due Date */}
-              <label className="block mt-4 text-sm">
-                <span className="text-gray-700 dark:text-gray-400">
-                  Ngày hết hạn
-                </span>
-                <input
-                  name="due_date"
-                  type="date"
-                  value={formData.due_date}
-                  onChange={handleChange}
-                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
-                  form-input focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                />
-                {errors.due_date && (
-                  <p className="text-red-500 text-sm">{errors.due_date[0]}</p>
-                )}
-              </label>
-
               {/* Priority */}
               <label className="block mt-4 text-sm">
                 <span className="text-gray-700 dark:text-gray-400">
@@ -243,6 +225,24 @@ const EditTask = () => {
                   <p className="text-red-500 text-sm">
                     {errors.assigned_to[0]}
                   </p>
+                )}
+              </label>
+
+              {/* Due Date */}
+              <label className="block mt-4 text-sm">
+                <span className="text-gray-700 dark:text-gray-400">
+                  Ngày hết hạn
+                </span>
+                <input
+                  name="due_date"
+                  type="date"
+                  value={formData.due_date}
+                  onChange={handleChange}
+                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
+                  form-input focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                />
+                {errors.due_date && (
+                  <p className="text-red-500 text-sm">{errors.due_date[0]}</p>
                 )}
               </label>
 

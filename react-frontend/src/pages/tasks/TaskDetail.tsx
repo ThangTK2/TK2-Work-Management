@@ -85,11 +85,9 @@ const TaskDetail = () => {
                   </tr>
                   <tr>
                     <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
-                      Ngày hết hạn
+                      Người tạo
                     </td>
-                    <td className="px-4 py-2">
-                      {task.due_date || "Không có ngày hết hạn"}
-                    </td>
+                    <td className="px-4 py-2">{task.created_by}</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
@@ -99,15 +97,17 @@ const TaskDetail = () => {
                   </tr>
                   <tr>
                     <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
-                      Người tạo
-                    </td>
-                    <td className="px-4 py-2">{task.created_by}</td>
-                  </tr>
-                  <tr>
-                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                       Ngày tạo
                     </td>
                     <td className="px-4 py-2">{task.created_at}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                      Ngày hết hạn
+                    </td>
+                    <td className="px-4 py-2">
+                      {task.due_date || "Không có ngày hết hạn"}
+                    </td>
                   </tr>
                 </tbody>
               </table>

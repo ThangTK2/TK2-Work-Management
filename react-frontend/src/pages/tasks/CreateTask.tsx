@@ -17,17 +17,17 @@ export default function TaskCreate() {
   });
 
   const STATUS_OPTIONS = [
-    { value: "new", label: "Mới" },
-    { value: "in_progress", label: "Đang tiến hành" },
-    { value: "pending", label: "Đang chờ" },
-    { value: "completed", label: "Hoàn thành" },
-    { value: "expired", label: "Hết hạn" },
+    { value: "new", label: "New" },
+    { value: "in_progress", label: "In Progress" },
+    { value: "pending", label: "Pending" },
+    { value: "completed", label: "Completed" },
+    { value: "expired", label: "Expired" },
   ];
 
   const PRIORITY_OPTIONS = [
-    { value: "low", label: "Thấp" },
-    { value: "medium", label: "Trung bình" },
-    { value: "high", label: "Cao" },
+    { value: "low", label: "Low" },
+    { value: "medium", label: "Medium" },
+    { value: "high", label: "High" },
   ];
 
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -95,7 +95,7 @@ export default function TaskCreate() {
                 <span className="text-gray-700 dark:text-gray-400">
                   Tiêu đề
                 </span>
-                <span className="text-red-600">*</span>
+                <span className="text-red-600 ml-1">*</span>
                 <input
                   name="title"
                   value={formData.title}
@@ -112,7 +112,7 @@ export default function TaskCreate() {
               {/* Description */}
               <label className="block text-sm mt-4">
                 <span className="text-gray-700 dark:text-gray-400">Mô tả</span>
-                <span className="text-red-600">*</span>
+                <span className="text-red-600 ml-1">*</span>
                 <input
                   name="description"
                   value={formData.description}
@@ -133,12 +133,14 @@ export default function TaskCreate() {
                 <span className="text-gray-700 dark:text-gray-400">
                   Trạng thái
                 </span>
+                <span className="text-red-600 ml-1">*</span>
                 <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
                   className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select"
                 >
+                  <option value="">-- Chọn trạng thái --</option>
                   {STATUS_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
@@ -146,25 +148,9 @@ export default function TaskCreate() {
                   ))}
                 </select>
                 {errors.status && (
-                  <p className="text-red-500 text-sm">{errors.status[0]}</p>
-                )}
-              </label>
-
-              {/* Due Date */}
-              <label className="block mt-4 text-sm">
-                <span className="text-gray-700 dark:text-gray-400">
-                  Ngày hết hạn
-                </span>
-                <input
-                  name="due_date"
-                  type="date"
-                  value={formData.due_date}
-                  onChange={handleChange}
-                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
-                  form-input focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                />
-                {errors.due_date && (
-                  <p className="text-red-500 text-sm">{errors.due_date[0]}</p>
+                  <p className="text-red-500 text-sm ml-1">
+                    {errors.status[0]}
+                  </p>
                 )}
               </label>
 
@@ -173,12 +159,14 @@ export default function TaskCreate() {
                 <span className="text-gray-700 dark:text-gray-400">
                   Độ ưu tiên
                 </span>
+                <span className="text-red-600">*</span>
                 <select
                   name="priority"
                   value={formData.priority}
                   onChange={handleChange}
                   className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select"
                 >
+                  <option value="">-- Chọn độ ưu tiên --</option>
                   {PRIORITY_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
@@ -202,7 +190,7 @@ export default function TaskCreate() {
                   className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
                   form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 >
-                  <option value="">-- Chọn --</option>
+                  <option value="">-- Chọn người được giao --</option>
                   {users.map((u) => (
                     <option key={u.id} value={u.id}>
                       {u.name}
@@ -213,6 +201,24 @@ export default function TaskCreate() {
                   <p className="text-red-500 text-sm">
                     {errors.assigned_to[0]}
                   </p>
+                )}
+              </label>
+
+              {/* Due Date */}
+              <label className="block mt-4 text-sm">
+                <span className="text-gray-700 dark:text-gray-400">
+                  Ngày hết hạn
+                </span>
+                <input
+                  name="due_date"
+                  type="date"
+                  value={formData.due_date}
+                  onChange={handleChange}
+                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
+                  form-input focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                />
+                {errors.due_date && (
+                  <p className="text-red-500 text-sm">{errors.due_date[0]}</p>
                 )}
               </label>
 

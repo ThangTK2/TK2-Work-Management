@@ -21,6 +21,8 @@ const TaskList = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // số task trên mỗi trang
 
   const fetchTasks = async () => {
     try {
@@ -61,6 +63,12 @@ const TaskList = () => {
       task.description.toLowerCase().includes(search.toLowerCase())
   );
 
+  //Tính toán tasks hiển thị theo trang
+  const indexOfLastTask = currentPage * itemsPerPage;
+  const indexOfFirstTask = indexOfLastTask - itemsPerPage;
+  const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       <SideBar />
@@ -97,14 +105,14 @@ const TaskList = () => {
                           Đang tải nhiệm vụ...
                         </td>
                       </tr>
-                    ) : filteredTasks.length === 0 ? (
+                    ) : currentTasks.length === 0 ? (
                       <tr>
                         <td colSpan={10} className="px-4 py-3 text-center">
                           Không có nhiệm vụ nào được tìm thấy.
                         </td>
                       </tr>
                     ) : (
-                      filteredTasks.map((task, index) => (
+                      currentTasks.map((task, index) => (
                         <tr
                           key={task.id}
                           className="text-gray-700 dark:text-gray-400"
@@ -194,19 +202,75 @@ const TaskList = () => {
               {/* Pagination giữ nguyên */}
               <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span className="flex items-center col-span-3">
-                  Hiển thị 1-{tasks.length} trong số {tasks.length}
+                  Hiển thị {Math.min(indexOfLastTask, filteredTasks.length)}{" "}
+                  trong số {filteredTasks.length} nhiệm vụ
                 </span>
                 <span className="col-span-2"></span>
                 <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                   <nav aria-label="Table navigation">
-                    <ul className="inline-flex items-center">
-                      {[...Array(5)].map((_, i) => (
+                    <ul className="inline-flex items-center space-x-1">
+                      <li>
+                        <button
+                          className="px-3 py-1 rounded-md"
+                          onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                          }
+                          disabled={currentPage === 1}
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                      </li>
+                      {Array.from({ length: totalPages }, (_, i) => (
                         <li key={i}>
-                          <button className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                          <button
+                            className={`px-3 py-1 rounded-md ${
+                              currentPage === i + 1
+                                ? "bg-purple-600 text-white"
+                                : ""
+                            }`}
+                            onClick={() => setCurrentPage(i + 1)}
+                          >
                             {i + 1}
                           </button>
                         </li>
                       ))}
+                      <li>
+                        <button
+                          className="px-3 py-1 rounded-md"
+                          onClick={() =>
+                            setCurrentPage((prev) =>
+                              Math.min(prev + 1, totalPages)
+                            )
+                          }
+                          disabled={currentPage === totalPages}
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </li>
                     </ul>
                   </nav>
                 </span>
