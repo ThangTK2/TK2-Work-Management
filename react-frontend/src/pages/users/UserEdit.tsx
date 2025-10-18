@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
+import Footer from "../../components/Footer";
 
 type User = {
   id: number;
@@ -108,6 +109,7 @@ const UserEdit = () => {
             </form>
           </div>
         </main>
+        <Footer />
       </div>
     </div>
   );

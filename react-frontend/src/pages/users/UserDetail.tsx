@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
+import Footer from "../../components/Footer";
 
 type User = {
   id: number;
@@ -34,7 +35,7 @@ const UserDetail = () => {
     fetchUser();
   }, [id, navigate]);
 
-  if (!user) return null; // Không cần loading, chỉ hiển thị khi có dữ liệu
+  if (!user) return null;
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
@@ -43,26 +44,44 @@ const UserDetail = () => {
         <Header onSearch={() => {}} />
 
         <main className="h-full pb-16 overflow-y-auto">
-          <div className="container px-6 mx-auto mt-6">
-            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">
+          <div className="container px-6 mx-auto grid">
+            <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
               Chi tiết người dùng
             </h2>
-            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-              <p>
-                <strong>ID:</strong> {user.id}
-              </p>
-              <p>
-                <strong>Tên:</strong> {user.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {user.email}
-              </p>
-              <p>
-                <strong>Ngày tạo:</strong>{" "}
-                {new Date(user.created_at).toLocaleDateString()}
-              </p>
 
-              <div className="mt-4">
+            <div className="w-full overflow-hidden rounded-lg shadow-xs bg-white dark:bg-gray-800 p-6">
+              <table className="w-full whitespace-no-wrap">
+                <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+                  <tr>
+                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                      ID
+                    </td>
+                    <td className="px-4 py-2">{user.id}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                      Tên
+                    </td>
+                    <td className="px-4 py-2">{user.name}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                      Email
+                    </td>
+                    <td className="px-4 py-2">{user.email}</td>
+                  </tr>
+                  <tr>
+                    <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                      Ngày tạo
+                    </td>
+                    <td className="px-4 py-2">
+                      {new Date(user.created_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div className="mt-4 flex justify-end space-x-2">
                 <button
                   className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                   onClick={() => navigate(`/users/edit/${user.id}`)}
@@ -70,7 +89,7 @@ const UserDetail = () => {
                   Sửa
                 </button>
                 <button
-                  className="ml-2 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
                   onClick={() => navigate("/users")}
                 >
                   Quay lại
@@ -79,6 +98,7 @@ const UserDetail = () => {
             </div>
           </div>
         </main>
+        <Footer />
       </div>
     </div>
   );

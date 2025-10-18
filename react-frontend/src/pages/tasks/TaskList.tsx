@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
+import Footer from "../../components/Footer";
 
 type Task = {
   id: number;
@@ -278,6 +279,8 @@ const TaskList = () => {
             </div>
           </div>
         </main>
+
+        <Footer />
       </div>
     </div>
   );

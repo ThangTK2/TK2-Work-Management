@@ -14,7 +14,7 @@ const SideBar = () => {
           TK2 - Work Management
         </Link>
         <ul className="mt-6">
-          <li className="relative px-6 py-3">
+          <li className="relative px-6 py-2">
             {isActive("/dashboard") && (
               <span
                 className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -23,17 +23,17 @@ const SideBar = () => {
             )}
             <Link
               to="/dashboard"
-              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+              className={`flex items-center w-full px-3 py-2 text-sm font-medium text-gray-800 rounded-md transition-colors duration-150 ${
                 isActive("/dashboard")
                   ? "text-purple-600"
-                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
               }`}
             >
               <span className="ml-4">Dashboard</span>
             </Link>
           </li>
 
-          <li className="relative px-6 py-3">
+          <li className="relative px-6 py-2">
             {isActive("/users") && (
               <span
                 className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -42,17 +42,17 @@ const SideBar = () => {
             )}
             <Link
               to="/users"
-              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+              className={`flex items-center w-full px-3 py-2 text-sm font-medium text-gray-800 rounded-md transition-colors duration-150 ${
                 isActive("/users")
                   ? "text-purple-600"
-                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
               }`}
             >
               <span className="ml-4">Người dùng</span>
             </Link>
           </li>
 
-          <li className="relative px-6 py-3">
+          <li className="relative px-6 py-2">
             {isActive("/tasks") && (
               <span
                 className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -61,10 +61,10 @@ const SideBar = () => {
             )}
             <Link
               to="/tasks"
-              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+              className={`flex items-center w-full px-3 py-2 text-sm font-medium text-gray-800 rounded-md transition-colors duration-150 ${
                 isActive("/tasks")
                   ? "text-purple-600"
-                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-200"
               }`}
             >
               <span className="ml-4">Nhiệm vụ</span>

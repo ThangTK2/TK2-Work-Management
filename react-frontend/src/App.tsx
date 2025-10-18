@@ -15,25 +15,27 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/user/register" element={<Register />} />
-        <Route path="/user/login" element={<Login />} />
-        <Route path="/user/forgot-password" element={<ForgotPassword />} />
-        <Route path="/user/reset-password" element={<ResetPassword />} />
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/tasks" element={<TaskList />} />
-        <Route path="/tasks/create" element={<CreateTask />} />
-        <Route path="/tasks/detail/:id" element={<TaskDetail />} />
-        <Route path="/tasks/edit/:id" element={<EditTask />} />
+          <Route path="/user/register" element={<Register />} />
+          <Route path="/user/login" element={<Login />} />
+          <Route path="/user/forgot-password" element={<ForgotPassword />} />
+          <Route path="/user/reset-password" element={<ResetPassword />} />
+          <Route path="/user/profile" element={<Profile />} />
+          <Route path="/tasks" element={<TaskList />} />
+          <Route path="/tasks/create" element={<CreateTask />} />
+          <Route path="/tasks/detail/:id" element={<TaskDetail />} />
+          <Route path="/tasks/edit/:id" element={<EditTask />} />
 
-        <Route path="/users" element={<UserList />} />
-        <Route path="/users/detail/:id" element={<UserDetail />} />
-        <Route path="/users/edit/:id" element={<UserEdit />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/users" element={<UserList />} />
+          <Route path="/users/detail/:id" element={<UserDetail />} />
+          <Route path="/users/edit/:id" element={<UserEdit />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

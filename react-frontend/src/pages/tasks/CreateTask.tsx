@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axiosClient from "../../lib/axiosClient";
 import SideBar from "../../components/SideBar";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export default function TaskCreate() {
   const navigate = useNavigate();
@@ -233,6 +234,7 @@ export default function TaskCreate() {
             </div>
           </div>
         </main>
+        <Footer />
       </div>
     </div>
   );

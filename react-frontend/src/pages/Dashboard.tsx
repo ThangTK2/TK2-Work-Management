@@ -11,6 +11,7 @@ import {
 import axiosClient from "../lib/axiosClient";
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const STATUS_OPTIONS = [
   { value: "new", label: "New" },
@@ -113,6 +114,7 @@ const Dashboard = () => {
             </div>
           </div>
         </main>
+        <Footer />
       </div>
     </div>
   );
