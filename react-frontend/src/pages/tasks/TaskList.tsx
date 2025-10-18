@@ -154,7 +154,7 @@ const TaskList = () => {
                               : "-"}
                           </td>
                           <td className="px-4 py-3 text-sm">
-                            <span className="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600">
+                            <span className="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-700">
                               {task.priority}
                             </span>
                           </td>

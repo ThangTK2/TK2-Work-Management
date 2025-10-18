@@ -1,14 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
+import { useThemeDarkMode } from "../hooks/useThemeDarkMode";
 
 const SideBar = () => {
   const location = useLocation();
-  const isActive = (path: string) => location.pathname.startsWith(path);
+  const { theme, toggleTheme } = useThemeDarkMode();
+  const isActive = (path: string) => location.pathname.startsWith(path); //menu active
 
   return (
     <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block">
       <div className="py-4 text-gray-500 dark:text-gray-400">
         <Link
-          to="/tasks"
+          to="/dashboard"
           className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
         >
           TK2 - Work Management
@@ -81,6 +83,16 @@ const SideBar = () => {
               </span>
             </button>
           </Link>
+        </div>
+
+        {/* 🌗 Nút chuyển theme */}
+        <div className="px-6 mt-6">
+          <button
+            onClick={toggleTheme}
+            className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+          >
+            {theme === "dark" ? "🌞 Chế độ sáng" : "🌙 Chế độ tối"}
+          </button>
         </div>
       </div>
     </aside>
