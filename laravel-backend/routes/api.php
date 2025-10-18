@@ -36,3 +36,7 @@ Route::post('reset-password', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tasks', TaskController::class);
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UsersController::class);
+});

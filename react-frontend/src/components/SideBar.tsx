@@ -1,6 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const SideBar = () => {
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname.startsWith(path);
+
   return (
     <aside className="z-20 flex-shrink-0 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block">
       <div className="py-4 text-gray-500 dark:text-gray-400">
@@ -12,34 +15,63 @@ const SideBar = () => {
         </Link>
         <ul className="mt-6">
           <li className="relative px-6 py-3">
-            <a
-              className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-              href="tables.html"
+            {isActive("/dashboard") && (
+              <span
+                className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
+            )}
+            <Link
+              to="/dashboard"
+              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+                isActive("/dashboard")
+                  ? "text-purple-600"
+                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+              }`}
             >
               <span className="ml-4">Dashboard</span>
-            </a>
+            </Link>
           </li>
+
           <li className="relative px-6 py-3">
-            <a
-              className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-              href="tables.html"
+            {isActive("/users") && (
+              <span
+                className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
+            )}
+            <Link
+              to="/users"
+              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+                isActive("/users")
+                  ? "text-purple-600"
+                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+              }`}
             >
               <span className="ml-4">Người dùng</span>
-            </a>
+            </Link>
           </li>
+
           <li className="relative px-6 py-3">
-            <span
-              className="absolute inset-y-0 left-5 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"
-            ></span>
+            {isActive("/tasks") && (
+              <span
+                className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
+            )}
             <Link
               to="/tasks"
-              className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
+              className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
+                isActive("/tasks")
+                  ? "text-purple-600"
+                  : "text-gray-800 dark:text-gray-100 hover:text-gray-800 dark:hover:text-gray-200"
+              }`}
             >
               <span className="ml-4">Nhiệm vụ</span>
             </Link>
           </li>
         </ul>
+
         <div className="px-6 my-6">
           <Link to="/tasks/create">
             <button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
