@@ -20,6 +20,7 @@ const TaskList = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const fetchTasks = async () => {
     try {
@@ -53,11 +54,18 @@ const TaskList = () => {
     }
   };
 
+  // filter search by title & description
+  const filteredTasks = tasks.filter(
+    (task) =>
+      task.title.toLowerCase().includes(search.toLowerCase()) ||
+      task.description.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       <SideBar />
       <div className="flex flex-col flex-1 w-full">
-        <Header />
+        <Header onSearch={setSearch} />
 
         <main className="h-full pb-16 overflow-y-auto">
           <div className="container grid px-6 mx-auto">
@@ -89,14 +97,14 @@ const TaskList = () => {
                           Loading tasks...
                         </td>
                       </tr>
-                    ) : tasks.length === 0 ? (
+                    ) : filteredTasks.length === 0 ? (
                       <tr>
                         <td colSpan={10} className="px-4 py-3 text-center">
                           No tasks found.
                         </td>
                       </tr>
                     ) : (
-                      tasks.map((task) => (
+                      filteredTasks.map((task) => (
                         <tr
                           key={task.id}
                           className="text-gray-700 dark:text-gray-400"

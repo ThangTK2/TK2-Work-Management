@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+type HeaderProps = {
+  onSearch?: (value: string) => void;
+};
+
+const Header = ({ onSearch }: HeaderProps) => {
   const [user, setUser] = useState<{ name: string } | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -49,6 +53,7 @@ const Header = () => {
               type="text"
               placeholder="Search for tasks"
               aria-label="Search"
+              onChange={(e) => onSearch && onSearch(e.target.value)}
             />
           </div>
         </div>
@@ -97,7 +102,7 @@ const Header = () => {
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-red-400"
                   >
                     <svg
-                      className="w-4 h-4 mr-3"
+                      className="w-4 h-4 mr-3 mb-[-4px]"
                       aria-hidden="true"
                       fill="none"
                       stroke="currentColor"
