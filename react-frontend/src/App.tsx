@@ -11,11 +11,14 @@ import Profile from "./pages/auth/Profile";
 import UserList from "./pages/users/UserList";
 import UserDetail from "./pages/users/UserDetail";
 import UserEdit from "./pages/users/UserEdit";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
         <Route path="/user/forgot-password" element={<ForgotPassword />} />
