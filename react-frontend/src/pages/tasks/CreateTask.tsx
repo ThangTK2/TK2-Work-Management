@@ -10,11 +10,25 @@ export default function TaskCreate() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    status: "new",
-    priority: "medium",
+    status: "",
+    priority: "",
     due_date: "",
     assigned_to: "",
   });
+
+  const STATUS_OPTIONS = [
+    { value: "new", label: "Mới" },
+    { value: "in_progress", label: "Đang tiến hành" },
+    { value: "pending", label: "Đang chờ" },
+    { value: "completed", label: "Hoàn thành" },
+    { value: "expired", label: "Hết hạn" },
+  ];
+
+  const PRIORITY_OPTIONS = [
+    { value: "low", label: "Thấp" },
+    { value: "medium", label: "Trung bình" },
+    { value: "high", label: "Cao" },
+  ];
 
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
@@ -53,7 +67,7 @@ export default function TaskCreate() {
         },
       });
 
-      alert("Task created successfully!");
+      alert("Tạo nhiệm vụ thành công!");
       navigate("/tasks");
     } catch (err: any) {
       if (err.response?.data?.errors) {
@@ -73,12 +87,14 @@ export default function TaskCreate() {
         <main className="h-full pb-16 overflow-y-auto">
           <div className="container grid px-6 mx-auto">
             <h4 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-              Create Task
+              Tạo nhiệm vụ
             </h4>
             <div className="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
               {/* Title */}
               <label className="block text-sm">
-                <span className="text-gray-700 dark:text-gray-400">Title</span>
+                <span className="text-gray-700 dark:text-gray-400">
+                  Tiêu đề
+                </span>
                 <span className="text-red-600">*</span>
                 <input
                   name="title"
@@ -95,9 +111,7 @@ export default function TaskCreate() {
 
               {/* Description */}
               <label className="block text-sm mt-4">
-                <span className="text-gray-700 dark:text-gray-400">
-                  Description
-                </span>
+                <span className="text-gray-700 dark:text-gray-400">Mô tả</span>
                 <span className="text-red-600">*</span>
                 <input
                   name="description"
@@ -116,20 +130,20 @@ export default function TaskCreate() {
 
               {/* Status */}
               <label className="block mt-4 text-sm">
-                <span className="text-gray-700 dark:text-gray-400">Status</span>
+                <span className="text-gray-700 dark:text-gray-400">
+                  Trạng thái
+                </span>
                 <select
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
-                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
-                  form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
-                  dark:focus:shadow-outline-gray"
+                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select"
                 >
-                  <option value="new">New</option>
-                  <option value="in_progress">In Progress</option>
-                  <option value="pending">Pending</option>
-                  <option value="completed">Completed</option>
-                  <option value="expired">Expired</option>
+                  {STATUS_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
                 {errors.status && (
                   <p className="text-red-500 text-sm">{errors.status[0]}</p>
@@ -139,7 +153,7 @@ export default function TaskCreate() {
               {/* Due Date */}
               <label className="block mt-4 text-sm">
                 <span className="text-gray-700 dark:text-gray-400">
-                  Due Date
+                  Ngày hết hạn
                 </span>
                 <input
                   name="due_date"
@@ -157,18 +171,19 @@ export default function TaskCreate() {
               {/* Priority */}
               <label className="block mt-4 text-sm">
                 <span className="text-gray-700 dark:text-gray-400">
-                  Priority
+                  Độ ưu tiên
                 </span>
                 <select
                   name="priority"
                   value={formData.priority}
                   onChange={handleChange}
-                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
-                  form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                  className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select"
                 >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
+                  {PRIORITY_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
                 {errors.priority && (
                   <p className="text-red-500 text-sm">{errors.priority[0]}</p>
@@ -178,7 +193,7 @@ export default function TaskCreate() {
               {/* Assigned To */}
               <label className="block mt-4 text-sm">
                 <span className="text-gray-700 dark:text-gray-400">
-                  Assigned To
+                  Người được giao
                 </span>
                 <select
                   name="assigned_to"
@@ -187,7 +202,7 @@ export default function TaskCreate() {
                   className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
                   form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 >
-                  <option value="">-- None --</option>
+                  <option value="">-- Chọn --</option>
                   {users.map((u) => (
                     <option key={u.id} value={u.id}>
                       {u.name}
@@ -207,7 +222,7 @@ export default function TaskCreate() {
                 className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 
                 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
               >
-                Create Task
+                Tạo nhiệm vụ
               </button>
             </div>
           </div>

@@ -41,7 +41,7 @@ const TaskList = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+    if (!confirm("Bạn có chắc muốn xóa task này không?")) return;
     try {
       const token = localStorage.getItem("token");
       await axiosClient.delete(`/tasks/${id}`, {
@@ -50,7 +50,7 @@ const TaskList = () => {
       setTasks((prev) => prev.filter((task) => task.id !== id));
     } catch (err) {
       console.error(err);
-      alert("Failed to delete task");
+      alert("Xóa task thất bại!");
     }
   };
 
@@ -70,7 +70,7 @@ const TaskList = () => {
         <main className="h-full pb-16 overflow-y-auto">
           <div className="container grid px-6 mx-auto">
             <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-              Tasks
+              Danh sách nhiệm vụ
             </h2>
 
             <div className="w-full overflow-hidden rounded-lg shadow-xs">
@@ -79,32 +79,32 @@ const TaskList = () => {
                   <thead>
                     <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                       <th className="px-4 py-3">ID</th>
-                      <th className="px-4 py-3">Title</th>
-                      <th className="px-4 py-3">Description</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Due_date</th>
-                      <th className="px-4 py-3">Priority</th>
-                      <th className="px-4 py-3">Assigned_to</th>
-                      <th className="px-4 py-3">Created_by</th>
-                      <th className="px-4 py-3">Created_at</th>
-                      <th className="px-4 py-3">Actions</th>
+                      <th className="px-4 py-3">Tiêu đề</th>
+                      <th className="px-4 py-3">Mô tả</th>
+                      <th className="px-4 py-3">Trạng thái</th>
+                      <th className="px-4 py-3">Ngày hết hạn</th>
+                      <th className="px-4 py-3">Độ ưu tiên</th>
+                      <th className="px-4 py-3">Người được giao</th>
+                      <th className="px-4 py-3">Người tạo</th>
+                      <th className="px-4 py-3">Ngày tạo</th>
+                      <th className="px-4 py-3">Hành động</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                     {loading ? (
                       <tr>
                         <td colSpan={10} className="px-4 py-3 text-center">
-                          Loading tasks...
+                          Đang tải nhiệm vụ...
                         </td>
                       </tr>
                     ) : filteredTasks.length === 0 ? (
                       <tr>
                         <td colSpan={10} className="px-4 py-3 text-center">
-                          No tasks found.
+                          Không có nhiệm vụ nào được tìm thấy.
                         </td>
                       </tr>
                     ) : (
-                      filteredTasks.map((task) => (
+                      filteredTasks.map((task, index) => (
                         <tr
                           key={task.id}
                           className="text-gray-700 dark:text-gray-400"
@@ -112,7 +112,7 @@ const TaskList = () => {
                           <td className="px-4 py-3">
                             <div className="flex items-center text-sm">
                               <div className="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                                {task.id}
+                                {index + 1}
                               </div>
                             </div>
                           </td>
@@ -123,12 +123,16 @@ const TaskList = () => {
                           <td className="px-4 py-3 text-xs">
                             <span
                               className={`px-2 py-1 font-semibold leading-tight rounded-full ${
-                                task.status === "Done"
-                                  ? "text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100"
-                                  : task.status === "Pending"
+                                task.status === "new"
+                                  ? "text-blue-700 bg-blue-100 dark:bg-blue-700 dark:text-blue-100"
+                                  : task.status === "in_progress"
+                                  ? "text-yellow-700 bg-yellow-100 dark:bg-yellow-700 dark:text-yellow-100"
+                                  : task.status === "pending"
                                   ? "text-orange-700 bg-orange-100 dark:bg-orange-700 dark:text-orange-100"
-                                  : task.status === "In_progress"
+                                  : task.status === "completed"
                                   ? "text-green-700 bg-green-100 dark:bg-green-700 dark:text-green-100"
+                                  : task.status === "expired"
+                                  ? "text-red-700 bg-red-100 dark:bg-red-700 dark:text-red-100"
                                   : "text-gray-700 bg-gray-100 dark:bg-gray-700 dark:text-gray-100"
                               }`}
                             >
@@ -136,7 +140,9 @@ const TaskList = () => {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-sm">
-                            {task.due_date || "-"}
+                            {task.due_date && !isNaN(Date.parse(task.due_date))
+                              ? new Date(task.due_date).toLocaleDateString()
+                              : "-"}
                           </td>
                           <td className="px-4 py-3 text-sm">
                             <span className="px-2 py-1 font-semibold leading-tight text-orange-700 bg-orange-100 rounded-full dark:text-white dark:bg-orange-600">
@@ -155,29 +161,26 @@ const TaskList = () => {
                           <td className="px-4 py-3">
                             <div className="flex items-center space-x-4 text-sm">
                               <button
-                                className="flex items-center justify-between px-2 py-2 font-medium leading-5 text-green-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                aria-label="View"
+                                className="text-green-600"
                                 onClick={() =>
                                   navigate(`/tasks/detail/${task.id}`)
                                 }
                               >
-                                View
+                                Xem
                               </button>
                               <button
-                                className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                aria-label="Edit"
+                                className="text-purple-600"
                                 onClick={() =>
                                   navigate(`/tasks/edit/${task.id}`)
                                 }
                               >
-                                Edit
+                                Sửa
                               </button>
                               <button
-                                className="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                aria-label="Delete"
+                                className="text-red-600"
                                 onClick={() => handleDelete(task.id)}
                               >
-                                Delete
+                                Xóa
                               </button>
                             </div>
                           </td>
@@ -191,7 +194,7 @@ const TaskList = () => {
               {/* Pagination giữ nguyên */}
               <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span className="flex items-center col-span-3">
-                  Showing 1-{tasks.length} of {tasks.length}
+                  Hiển thị 1-{tasks.length} trong số {tasks.length}
                 </span>
                 <span className="col-span-2"></span>
                 <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
