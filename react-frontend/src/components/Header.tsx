@@ -72,16 +72,42 @@ const Header = ({ onSearch }: HeaderProps) => {
                 <li>
                   <button
                     onClick={() => navigate("/user/profile")}
-                    className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800 focus:border-purple-300 focus:outline-none focus:shadow-outline-purple"
                   >
+                    <svg
+                      className="w-5 h-5 mr-2 text-gray-500 dark:text-gray-300"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5.121 17.804A8.966 8.966 0 0112 15c2.21 0 4.21.896 5.879 2.344M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
                     Hồ sơ cá nhân
                   </button>
                 </li>
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-red-400"
+                    className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-red-400 focus:border-purple-300 focus:outline-none focus:shadow-outline-purple"
                   >
+                    <svg
+                      className="w-5 h-5 mr-2 text-red-600 dark:text-red-400"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"
+                      />
+                    </svg>
                     Đăng xuất
                   </button>
                 </li>

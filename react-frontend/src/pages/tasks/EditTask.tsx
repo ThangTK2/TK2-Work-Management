@@ -239,15 +239,23 @@ const EditTask = () => {
                 />
               </label>
 
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white 
-                  transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg 
-                  active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-              >
-                Lưu thay đổi
-              </button>
+              <div className="flex justify-end space-x-2 mt-4">
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="px-4 py-2 font-medium text-white bg-purple-600 rounded hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                >
+                  Lưu thay đổi
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => navigate(-1)}
+                  className="px-4 py-2 font-medium text-gray-700 bg-gray-200 rounded hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:shadow-outline"
+                >
+                  Quay lại
+                </button>
+              </div>
             </div>
           </div>
         </main>

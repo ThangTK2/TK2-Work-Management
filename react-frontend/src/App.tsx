@@ -15,6 +15,7 @@ import UserList from "./pages/users/UserList";
 import UserDetail from "./pages/users/UserDetail";
 import UserEdit from "./pages/users/UserEdit";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -37,12 +38,14 @@ function App() {
           <Route path="/users" element={<UserList />} />
           <Route path="/users/detail/:id" element={<UserDetail />} />
           <Route path="/users/edit/:id" element={<UserEdit />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
 
       <ToastContainer
-        position="top-right"
-        autoClose={3000}
+        position="bottom-right"
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={true}
         closeOnClick

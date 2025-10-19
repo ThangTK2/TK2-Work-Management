@@ -13,15 +13,16 @@ type Task = {
   status: string;
   priority: string;
   due_date: string | null;
-  assigned_to: string;
-  created_by: string;
   created_at: string;
+  assigned_user?: { name: string } | null;
+  creator?: { name: string } | null;
 };
 
 const TaskDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [task, setTask] = useState<Task | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,7 +51,6 @@ const TaskDetail = () => {
         <Header />
 
         <main className="h-full pb-16 overflow-y-auto relative">
-          {/* Loading overlay */}
           {loading && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/70 dark:bg-gray-900/70">
               <p className="text-gray-500 dark:text-gray-400 text-lg">
@@ -105,13 +105,13 @@ const TaskDetail = () => {
                       <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                         Người tạo
                       </td>
-                      <td className="px-4 py-2">{task.created_by}</td>
+                      <td className="px-4 py-2">{task.creator?.name}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                         Người được giao
                       </td>
-                      <td className="px-4 py-2">{task.assigned_to}</td>
+                      <td className="px-4 py-2">{task.assigned_user?.name}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">

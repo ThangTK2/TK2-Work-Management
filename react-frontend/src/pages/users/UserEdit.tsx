@@ -117,7 +117,7 @@ const UserEdit = () => {
                     type="submit"
                     className="mr-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none"
                   >
-                    Lưu
+                    Lưu thay đổi
                   </button>
                   <button
                     type="button"
