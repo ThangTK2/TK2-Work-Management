@@ -9,25 +9,26 @@ import { toast } from "react-toastify";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, setUser } = useUser(); // dùng context
+  const { user, setUser } = useUser();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Khi người dùng chọn file mới
+  // Khi click avatar -> mở modal xem ảnh lớn
+  const handleOpenImage = () => {
+    setIsOpen(true);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-
-      // Tạo URL tạm để luu image preview
-      const url = URL.createObjectURL(selectedFile);
-      setPreviewUrl(url);
+      setPreviewUrl(URL.createObjectURL(selectedFile));
     }
   };
 
   const handleUpload = async () => {
     if (!file || !user) return;
-
     const formData = new FormData();
     formData.append("avatar", file);
 
@@ -41,20 +42,16 @@ const Profile = () => {
       });
 
       const updatedUser = { ...user, avatar: response.data.avatar };
-
-      setUser(updatedUser); // setUser: state user trong Context, không phải state cục bộ của Login.
+      setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
-
       toast.success("Cập nhật avatar thành công!");
-      setPreviewUrl(null); // xóa preview sau khi upload thành công
+      setPreviewUrl(null);
     } catch (err) {
       console.error(err);
-      alert("Cập nhật thất bại!");
       toast.error("Cập nhật thất bại!");
     }
   };
 
-  // Giải phóng object URL khi component unmount hoặc previewUrl thay đổi
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -69,6 +66,12 @@ const Profile = () => {
     );
   }
 
+  const avatarUrl =
+    previewUrl ||
+    (user.avatar
+      ? `http://localhost:8000/storage/${user.avatar}`
+      : "https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg");
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       <SideBar />
@@ -82,14 +85,10 @@ const Profile = () => {
                 {/* Avatar */}
                 <div className="relative">
                   <img
-                    className="object-cover w-32 h-32 rounded-full border-4 border-purple-500"
-                    src={
-                      previewUrl ||
-                      (user.avatar
-                        ? `http://localhost:8000/storage/${user.avatar}`
-                        : "https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&w=100&fit=max")
-                    }
+                    className="object-cover w-32 h-32 rounded-full border-4 border-purple-500 cursor-pointer hover:opacity-90 transition"
+                    src={avatarUrl}
                     alt="Avatar"
+                    onClick={handleOpenImage}
                   />
                   <div className="absolute bottom-0 right-0">
                     <label className="cursor-pointer">
@@ -114,31 +113,27 @@ const Profile = () => {
                   </div>
                 </div>
 
-                {/* User Info */}
-                <div className="flex flex-col items-center space-y-2 text-center">
+                {/* Thông tin user */}
+                <div className="text-center">
                   <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                     {user.name}
                   </h2>
                   <p className="text-gray-500 dark:text-gray-400">
                     {user.email}
                   </p>
-                  <p className="text-sm text-gray-400">
-                    Thành viên từ:{" "}
-                    {new Date(user.created_at).toLocaleDateString("vi-VN")}
-                  </p>
                 </div>
 
-                {/* Buttons ngang */}
+                {/* Nút */}
                 <div className="flex gap-4 w-full mt-4">
                   <button
                     onClick={handleUpload}
-                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-full hover:bg-purple-700 transition focus:outline-none"
+                    className="flex-1 px-4 py-2 text-sm text-white bg-purple-600 rounded-full hover:bg-purple-700 transition"
                   >
                     Cập nhật avatar
                   </button>
                   <button
                     onClick={() => navigate("/tasks")}
-                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-full hover:bg-purple-700 transition focus:outline-none"
+                    className="flex-1 px-4 py-2 text-sm text-white bg-purple-600 rounded-full hover:bg-purple-700 transition"
                   >
                     Quay lại
                   </button>
@@ -147,9 +142,40 @@ const Profile = () => {
             </div>
           </div>
         </main>
-
         <Footer />
       </div>
+
+      {/* Modal xem ảnh lớn */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="relative">
+            <button
+              className="absolute top-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <img
+              src={previewUrl || `http://localhost:8000/storage/${user.avatar}`}
+              alt="Avatar"
+              className="max-w-[90vw] max-h-[80vh] object-contain rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
