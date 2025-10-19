@@ -1,28 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/UserContext";
 
 type HeaderProps = {
   onSearch?: (value: string) => void;
 };
 
 const Header = ({ onSearch }: HeaderProps) => {
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const { user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Lấy thông tin user từ localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
-
-  // Xử lý đăng xuất
   const handleLogout = () => {
-    const confirmLogout = window.confirm("Bạn có chắc muốn đăng xuất không?");
-    if (!confirmLogout) return;
-
+    if (!window.confirm("Bạn có chắc muốn đăng xuất không?")) return;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/user/login");
@@ -63,36 +53,27 @@ const Header = ({ onSearch }: HeaderProps) => {
           <li className="relative">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:shadow-outline-purple"
+              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:shadow-outline-purple "
             >
               <img
                 className="object-cover w-8 h-8 rounded-full"
-                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&w=100&fit=max"
+                src={
+                  user?.avatar
+                    ? `http://localhost:8000/storage/${user.avatar}`
+                    : "https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&w=100&fit=max"
+                }
                 alt="Avatar"
               />
               {user ? user.name : "Đang tải..."}
             </button>
 
             {isMenuOpen && (
-              <ul
-                className="absolute right-0 w-48 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-lg dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
-                aria-label="submenu"
-              >
+              <ul className="absolute right-0 w-48 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-lg dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700">
                 <li>
                   <button
                     onClick={() => navigate("/user/profile")}
                     className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                   >
-                    <svg
-                      className="w-4 h-4 mr-3"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
                     Hồ sơ cá nhân
                   </button>
                 </li>
@@ -101,17 +82,6 @@ const Header = ({ onSearch }: HeaderProps) => {
                     onClick={handleLogout}
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-red-400"
                   >
-                    <svg
-                      className="w-4 h-4 mr-3 mb-[-4px]"
-                      aria-hidden="true"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M11 16l-4-4m0 0l4-4m-4 4h14" />
-                      <path d="M21 12v1a3 3 0 01-3 3H7a3 3 0 01-3-3V7a3 3 0 013-3h11a3 3 0 013 3v1" />
-                    </svg>
                     Đăng xuất
                   </button>
                 </li>

@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,7 +26,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await axiosClient.post("/user/register", formData);
-      alert("Đăng ký thành công!"); // thêm thông báo sau khi đăng ký
+      navigate("/user/login");
     } catch (err: any) {
       if (err.response && err.response.data && err.response.data.errors) {
         setErrors(err.response.data.errors);

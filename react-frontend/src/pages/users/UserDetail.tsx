@@ -4,13 +4,7 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-  created_at: string;
-};
+import type { User } from "../../hooks/UserContext";
 
 const UserDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,7 +69,7 @@ const UserDetail = () => {
                       Ngày tạo
                     </td>
                     <td className="px-4 py-2">
-                      {new Date(user.created_at).toLocaleDateString()}
+                      {new Date(user.created_at).toLocaleDateString("vi-VN")}
                     </td>
                   </tr>
                 </tbody>
@@ -83,13 +77,13 @@ const UserDetail = () => {
 
               <div className="mt-4 flex justify-end space-x-2">
                 <button
-                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                  className="mr-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                   onClick={() => navigate(`/users/edit/${user.id}`)}
                 >
                   Sửa
                 </button>
                 <button
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500 dark:text-gray-200  focus:outline-none focus:shadow-outline-purple"
                   onClick={() => navigate("/users")}
                 >
                   Quay lại

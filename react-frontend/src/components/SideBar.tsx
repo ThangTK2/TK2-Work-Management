@@ -13,7 +13,7 @@ const SideBar = () => {
           to="/dashboard"
           className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
         >
-          TK2 - Work Management
+          TK2 - Quản lý công việc
         </Link>
         <ul className="mt-6">
           <li className="relative px-6 py-2">

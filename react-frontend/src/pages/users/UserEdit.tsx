@@ -5,17 +5,15 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
+import { useUser, type User } from "../../hooks/UserContext";
 
 const UserEdit = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const { setUser } = useUser();
+
+  const [formUser, setFormUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,7 +22,8 @@ const UserEdit = () => {
         const response = await axiosClient.get(`/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(response.data);
+        setFormUser(response.data);
+        setLoading(false);
       } catch (err) {
         console.error(err);
         alert("Không tìm thấy người dùng");
@@ -37,13 +36,17 @@ const UserEdit = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!formUser) return;
 
     try {
       const token = localStorage.getItem("token");
-      await axiosClient.put(`/users/${id}`, user, {
+      await axiosClient.put(`/users/${id}`, formUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      setUser(formUser);
+      localStorage.setItem("user", JSON.stringify(formUser));
+
       alert("Cập nhật thành công!");
       navigate("/users");
     } catch (err: any) {
@@ -52,7 +55,15 @@ const UserEdit = () => {
     }
   };
 
-  if (!user) return null;
+  if (loading || !formUser) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <p className="text-gray-500 dark:text-gray-400">
+          Đang tải thông tin...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
@@ -61,47 +72,56 @@ const UserEdit = () => {
         <Header onSearch={() => {}} />
 
         <main className="h-full pb-16 overflow-y-auto">
-          <div className="container px-6 mx-auto mt-6">
-            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-4">
+          <div className="container px-6 mx-auto mt-6 max-w-lg">
+            <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
               Sửa người dùng
             </h2>
 
             <form
-              className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-4"
               onSubmit={handleSubmit}
+              className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-4"
             >
               <div>
-                <label className="block mb-1">Tên</label>
+                <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                  Tên
+                </label>
                 <input
                   type="text"
-                  value={user.name}
-                  onChange={(e) => setUser({ ...user, name: e.target.value })}
-                  className="w-full px-3 py-2 border rounded dark:bg-gray-700"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block mb-1">Email</label>
-                <input
-                  type="email"
-                  value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  className="w-full px-3 py-2 border rounded dark:bg-gray-700"
+                  value={formUser.name}
+                  onChange={(e) =>
+                    setFormUser({ ...formUser, name: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-gray-200"
                   required
                 />
               </div>
 
-              <div className="flex space-x-2">
+              <div>
+                <label className="block mb-1 text-gray-700 dark:text-gray-300">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={formUser.email}
+                  onChange={(e) =>
+                    setFormUser({ ...formUser, email: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+                  required
+                />
+              </div>
+
+              <div className="mt-4 flex justify-end space-x-2">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                  className="mr-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 focus:outline-none"
                 >
                   Lưu
                 </button>
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500"
                   onClick={() => navigate("/users")}
+                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500 dark:text-gray-200  focus:outline-none focus:shadow-outline-purple"
                 >
                   Hủy
                 </button>
@@ -109,6 +129,7 @@ const UserEdit = () => {
             </form>
           </div>
         </main>
+
         <Footer />
       </div>
     </div>

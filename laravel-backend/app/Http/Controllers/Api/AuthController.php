@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -152,6 +153,32 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Mật khẩu đã được đặt lại thành công!'
         ], 200);
+    }
+
+
+    public function uploadAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|max:2048', // giới hạn 2MB
+        ]);
+
+        $user = $request->user(); // user đang login (cần auth:sanctum middleware)
+
+        // Xóa avatar cũ nếu có
+        if ($user->avatar) {
+            Storage::delete($user->avatar);
+        }
+
+        // Lưu file
+        $path = $request->file('avatar')->store('avatars', 'public');
+
+        $user->avatar = $path;
+        $user->save();
+
+        return response()->json([
+            'message' => 'Avatar uploaded successfully',
+            'avatar' => $path,
+        ]);
     }
 
 }

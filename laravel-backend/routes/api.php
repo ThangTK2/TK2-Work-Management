@@ -17,11 +17,7 @@ use App\Http\Controllers\Api\UsersController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Auth routes
+// Auth routes (không cần đăng nhập)
 Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
@@ -31,12 +27,15 @@ Route::prefix('user')->group(function () {
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
-// Routes tasks
+// Routes cần đăng nhập
 // apiResource: tự động tạo đủ 5 route (index, show, store, update, destroy)
 Route::middleware('auth:sanctum')->group(function () {
+    // Task routes
     Route::apiResource('tasks', TaskController::class);
-});
 
-Route::middleware('auth:sanctum')->group(function () {
+    // User routes
     Route::apiResource('users', UsersController::class);
+
+    // Upload avatar
+    Route::post('user/avatar', [AuthController::class, 'uploadAvatar']);
 });

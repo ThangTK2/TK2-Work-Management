@@ -100,14 +100,18 @@ const TaskDetail = () => {
                     <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                       Ngày tạo
                     </td>
-                    <td className="px-4 py-2">{task.created_at}</td>
+                    <td className="px-4 py-2">
+                      {new Date(task.created_at).toLocaleDateString("vi-VN")}
+                    </td>
                   </tr>
                   <tr>
                     <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                       Ngày hết hạn
                     </td>
                     <td className="px-4 py-2">
-                      {task.due_date || "Không có ngày hết hạn"}
+                      {task.due_date
+                        ? new Date(task.due_date).toLocaleDateString("vi-VN")
+                        : "Không có ngày hết hạn"}
                     </td>
                   </tr>
                 </tbody>

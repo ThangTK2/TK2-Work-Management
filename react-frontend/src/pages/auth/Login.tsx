@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
+import { useUser } from "../../hooks/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -27,6 +29,8 @@ const Login = () => {
       const response = await axiosClient.post("/user/login", formData);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      setUser(response.data.user);
       alert("Đăng nhập thành công!");
       navigate("/tasks");
     } catch (err: any) {
