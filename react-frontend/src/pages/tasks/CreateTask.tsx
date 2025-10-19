@@ -4,6 +4,7 @@ import axiosClient from "../../lib/axiosClient";
 import SideBar from "../../components/SideBar";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { toast } from "react-toastify";
 
 export default function TaskCreate() {
   const navigate = useNavigate();
@@ -31,10 +32,8 @@ export default function TaskCreate() {
     { value: "high", label: "High" },
   ];
 
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [users, setUsers] = useState<{ id: number; name: string }[]>([]);
 
-  // Lấy danh sách users để gán task
   useEffect(() => {
     const token = localStorage.getItem("token");
     axiosClient
@@ -51,7 +50,6 @@ export default function TaskCreate() {
   };
 
   const handleSubmit = async () => {
-    setErrors({});
     try {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const token = localStorage.getItem("token");
@@ -62,20 +60,23 @@ export default function TaskCreate() {
         assigned_to: formData.assigned_to || null,
       };
 
-      const response = await axiosClient.post("/tasks", payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      await axiosClient.post("/tasks", payload, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      alert("Tạo nhiệm vụ thành công!");
+      toast.success("Tạo nhiệm vụ thành công!");
       navigate("/tasks");
     } catch (err: any) {
       if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
+        const errors = err.response.data.errors as Record<string, string[]>;
+        Object.values(errors).forEach((msgs) =>
+          msgs.forEach((msg) => toast.error(msg))
+        );
       } else {
         console.error(err);
-        alert("Đã xảy ra lỗi, vui lòng thử lại!");
+        toast.error(
+          err.response?.data?.message || "Đã xảy ra lỗi, vui lòng thử lại!"
+        );
       }
     }
   };
@@ -105,9 +106,6 @@ export default function TaskCreate() {
                   focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
                   dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 />
-                {errors.title && (
-                  <p className="text-red-500 text-sm">{errors.title[0]}</p>
-                )}
               </label>
 
               {/* Description */}
@@ -122,11 +120,6 @@ export default function TaskCreate() {
                   focus:border-purple-400 focus:outline-none focus:shadow-outline-purple 
                   dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                 />
-                {errors.description && (
-                  <p className="text-red-500 text-sm">
-                    {errors.description[0]}
-                  </p>
-                )}
               </label>
 
               {/* Status */}
@@ -148,11 +141,6 @@ export default function TaskCreate() {
                     </option>
                   ))}
                 </select>
-                {errors.status && (
-                  <p className="text-red-500 text-sm ml-1">
-                    {errors.status[0]}
-                  </p>
-                )}
               </label>
 
               {/* Priority */}
@@ -174,9 +162,6 @@ export default function TaskCreate() {
                     </option>
                   ))}
                 </select>
-                {errors.priority && (
-                  <p className="text-red-500 text-sm">{errors.priority[0]}</p>
-                )}
               </label>
 
               {/* Assigned To */}
@@ -198,11 +183,6 @@ export default function TaskCreate() {
                     </option>
                   ))}
                 </select>
-                {errors.assigned_to && (
-                  <p className="text-red-500 text-sm">
-                    {errors.assigned_to[0]}
-                  </p>
-                )}
               </label>
 
               {/* Due Date */}
@@ -218,9 +198,6 @@ export default function TaskCreate() {
                   className="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 
                   form-input focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                 />
-                {errors.due_date && (
-                  <p className="text-red-500 text-sm">{errors.due_date[0]}</p>
-                )}
               </label>
 
               <button

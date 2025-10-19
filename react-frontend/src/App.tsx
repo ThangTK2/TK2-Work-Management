@@ -1,4 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -25,6 +28,7 @@ function App() {
           <Route path="/user/forgot-password" element={<ForgotPassword />} />
           <Route path="/user/reset-password" element={<ResetPassword />} />
           <Route path="/user/profile" element={<Profile />} />
+
           <Route path="/tasks" element={<TaskList />} />
           <Route path="/tasks/create" element={<CreateTask />} />
           <Route path="/tasks/detail/:id" element={<TaskDetail />} />
@@ -35,6 +39,17 @@ function App() {
           <Route path="/users/edit/:id" element={<UserEdit />} />
         </Routes>
       </BrowserRouter>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </>
   );
 }

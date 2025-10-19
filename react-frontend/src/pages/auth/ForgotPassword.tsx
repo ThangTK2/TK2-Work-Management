@@ -1,22 +1,19 @@
 import { useState } from "react";
 import axiosClient from "../../lib/axiosClient";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
 
     try {
       const res = await axiosClient.post("/forgot-password", { email });
-      setMessage(res.data.message || "Đã gửi liên kết đặt lại mật khẩu!");
+      toast.success(res.data.message || "Đã gửi liên kết đặt lại mật khẩu!");
     } catch (err: any) {
-      setError(
+      toast.error(
         err.response?.data?.message || "Không thể gửi email, vui lòng thử lại!"
       );
     }
@@ -63,17 +60,6 @@ const ForgotPassword = () => {
                     placeholder="email@example.com"
                   />
                 </label>
-
-                {message && (
-                  <p className="text-green-600 text-sm mt-2 text-center">
-                    {message}
-                  </p>
-                )}
-                {error && (
-                  <p className="text-red-600 text-sm mt-2 text-center">
-                    {error}
-                  </p>
-                )}
 
                 <button
                   type="submit"

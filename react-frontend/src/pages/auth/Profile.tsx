@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
 import { useUser } from "../../hooks/UserContext";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -44,11 +45,12 @@ const Profile = () => {
       setUser(updatedUser); // setUser: state user trong Context, không phải state cục bộ của Login.
       localStorage.setItem("user", JSON.stringify(updatedUser));
 
-      alert("Cập nhật avatar thành công!");
+      toast.success("Cập nhật avatar thành công!");
       setPreviewUrl(null); // xóa preview sau khi upload thành công
     } catch (err) {
       console.error(err);
       alert("Cập nhật thất bại!");
+      toast.error("Cập nhật thất bại!");
     }
   };
 

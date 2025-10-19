@@ -4,6 +4,7 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
+import { toast } from "react-toastify";
 
 type Task = {
   id: number;
@@ -51,9 +52,13 @@ const TaskList = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTasks((prev) => prev.filter((task) => task.id !== id));
-    } catch (err) {
+      toast.success("Xóa nhiệm vụ thành công!");
+    } catch (err: any) {
       console.error(err);
-      alert("Xóa task thất bại!");
+      toast.error(
+        err.response?.data?.message ||
+          "Xóa nhiệm vụ thất bại, vui lòng thử lại!"
+      );
     }
   };
 

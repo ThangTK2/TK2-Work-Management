@@ -1,23 +1,19 @@
 import { useState } from "react";
 import axiosClient from "../../lib/axiosClient";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const [params] = useSearchParams();
-
   const token = params.get("token");
   const email = params.get("email");
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
 
     try {
       const res = await axiosClient.post("/reset-password", {
@@ -27,13 +23,16 @@ const ResetPassword = () => {
         password_confirmation: passwordConfirm,
       });
 
-      setMessage(res.data.message || "Đặt lại mật khẩu thành công!");
+      toast.success(
+        res.data.message ||
+          "Đặt lại mật khẩu thành công. Vui lòng đăng nhập để tiếp tục!"
+      );
 
       setTimeout(() => {
         navigate("/user/login");
       }, 1000);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Lỗi đặt lại mật khẩu");
+      toast.error(err.response?.data?.message || "Lỗi đặt lại mật khẩu");
     }
   };
 
@@ -69,15 +68,6 @@ const ResetPassword = () => {
                 className="block w-full mt-1 text-sm form-input"
               />
             </label>
-
-            {message && (
-              <p className="text-green-600 text-sm mt-3 text-center">
-                {message}
-              </p>
-            )}
-            {error && (
-              <p className="text-red-600 text-sm mt-3 text-center">{error}</p>
-            )}
 
             <button
               type="submit"

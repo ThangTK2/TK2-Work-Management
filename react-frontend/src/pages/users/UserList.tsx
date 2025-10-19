@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
 import type { User } from "../../hooks/UserContext";
+import { toast } from "react-toastify";
 
 const UserList = () => {
   const navigate = useNavigate();
@@ -46,19 +47,18 @@ const UserList = () => {
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Bạn có chắc muốn xóa người dùng này không?")) return;
+    if (!window.confirm("Bạn có chắc muốn xóa người dùng này không?")) return;
 
     try {
       const token = localStorage.getItem("token");
       await axiosClient.delete(`/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      // Cập nhật lại danh sách sau khi xóa
       setUsers((prev) => prev.filter((u) => u.id !== id));
-      alert("Xóa người dùng thành công!");
+      toast.success("Xóa người dùng thành công!");
     } catch (err: any) {
       console.error(err.response?.data || err);
-      alert("Xóa thất bại!");
+      toast.error("Xóa thất bại!");
     }
   };
 

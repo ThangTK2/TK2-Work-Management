@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -12,27 +13,29 @@ const Register = () => {
     password_confirmation: "",
   });
 
-  const [errors, setErrors] = useState<Record<string, string[]>>({}); // key là string, value là mảng string
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await axiosClient.post("/user/register", formData);
+      toast.success("Đăng ký thành công!");
       navigate("/user/login");
     } catch (err: any) {
-      if (err.response && err.response.data && err.response.data.errors) {
-        setErrors(err.response.data.errors);
+      if (err.response?.data?.errors) {
+        // Duyệt tất cả các lỗi và hiển thị bằng toast
+        const errors = err.response.data.errors as Record<string, string[]>; //key: string, value: mảng string
+        Object.values(errors).forEach((msgs) => {
+          msgs.forEach((msg) => toast.error(msg));
+        });
       } else {
-        setErrors({});
-        console.error("Lỗi khi đăng ký người dùng:", err);
+        console.error("Lỗi khi đăng ký:", err);
+        toast.error(
+          err.response?.data?.message || "Đã xảy ra lỗi, vui lòng thử lại sau!"
+        );
       }
     }
   };
@@ -74,9 +77,6 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nguyễn Văn A"
                   />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm">{errors.name[0]}</p>
-                  )}
                 </label>
 
                 <label className="block text-sm mt-4">
@@ -92,9 +92,6 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="email@example.com"
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email[0]}</p>
-                  )}
                 </label>
 
                 <label className="block text-sm mt-4">
@@ -111,9 +108,6 @@ const Register = () => {
                     dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nhập mật khẩu"
                   />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm">{errors.password[0]}</p>
-                  )}
                 </label>
 
                 <label className="block text-sm mt-4">

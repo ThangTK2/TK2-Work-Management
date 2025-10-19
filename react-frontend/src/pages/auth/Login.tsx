@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../lib/axiosClient";
 import { useUser } from "../../hooks/UserContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,9 +12,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState<Record<string, string[]>>({}); // lỗi trả về từ server
-  const [error, setError] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,15 +28,20 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      setUser(response.data.user);
-      alert("Đăng nhập thành công!");
+      setUser(response.data.user); // trong context
+      toast.success("Đăng nhập thành công!");
       navigate("/tasks");
     } catch (err: any) {
       if (err.response?.data?.errors) {
-        setErrors(err.response.data.errors);
+        // Hiển thị từng lỗi riêng bằng toast
+        Object.values(
+          err.response.data.errors as Record<string, string[]>
+        ).forEach((msgs) => msgs.forEach((msg) => toast.error(msg)));
       } else {
         console.error(err);
-        setError("Đã xảy ra lỗi, vui lòng thử lại sau!");
+        toast.error(
+          err.response?.data?.message || "Đã xảy ra lỗi, vui lòng thử lại sau!"
+        );
       }
     }
   };
@@ -83,9 +86,6 @@ const Login = () => {
                     placeholder="email@example.com"
                   />
                 </label>
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email[0]}</p>
-                )}
 
                 {/* Mật khẩu */}
                 <label className="block mt-4 text-sm">
@@ -103,10 +103,6 @@ const Login = () => {
                     placeholder="Nhập mật khẩu"
                   />
                 </label>
-                {errors.password && (
-                  <p className="text-red-500 text-sm">{errors.password[0]}</p>
-                )}
-                {error && <p className="text-red-500 text-sm">{error}</p>}
 
                 <button
                   type="submit"

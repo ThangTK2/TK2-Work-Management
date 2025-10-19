@@ -12,6 +12,7 @@ import axiosClient from "../lib/axiosClient";
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { toast } from "react-toastify";
 
 const STATUS_OPTIONS = [
   { value: "new", label: "New" },
@@ -27,8 +28,10 @@ const Dashboard = () => {
   const [taskStats, setTaskStats] = useState<
     { status: string; count: number }[]
   >([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchStats = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
 
@@ -51,9 +54,11 @@ const Dashboard = () => {
           .length,
       }));
       setTaskStats(stats);
-    } catch (err) {
-      console.error(err);
-      alert("Lấy thống kê thất bại!");
+    } catch (err: any) {
+      console.error("Lỗi fetch dashboard:", err);
+      toast.error("Lấy thống kê thất bại!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,14 +71,26 @@ const Dashboard = () => {
       <SideBar />
       <div className="flex flex-col flex-1 w-full">
         <Header onSearch={() => {}} />
-        <main className="h-full pb-16 overflow-y-auto">
-          <div className="container px-6 mx-auto mt-6">
+        <main className="h-full pb-16 overflow-y-auto relative">
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/70 dark:bg-gray-900/70 z-10">
+              <p className="text-gray-500 dark:text-gray-400">
+                Đang tải thống kê...
+              </p>
+            </div>
+          )}
+
+          <div
+            className={`container px-6 mx-auto mt-6 ${
+              loading ? "opacity-50" : ""
+            }`}
+          >
             <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200 mb-6">
               Dashboard
             </h2>
 
+            {/* Các thống kê */}
             <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-              {/* Thống kê người dùng */}
               <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
                 <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                   Tổng số người dùng
@@ -82,8 +99,6 @@ const Dashboard = () => {
                   {userCount}
                 </p>
               </div>
-
-              {/* Thống kê tasks */}
               <div className="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
                 <p className="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
                   Tổng số nhiệm vụ
@@ -94,7 +109,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Biểu đồ thống kê task theo trạng thái */}
+            {/* Biểu đồ */}
             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-xs">
               <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">
                 Nhiệm vụ theo trạng thái
@@ -114,6 +129,7 @@ const Dashboard = () => {
             </div>
           </div>
         </main>
+
         <Footer />
       </div>
     </div>
