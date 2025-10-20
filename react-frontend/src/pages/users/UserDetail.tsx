@@ -86,15 +86,9 @@ const UserDetail = () => {
                   </tbody>
                 </table>
 
-                <div className="mt-4 flex justify-end space-x-2">
+                <div className="mt-4 flex justify-end">
                   <button
-                    className="mr-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-                    onClick={() => navigate(`/users/edit/${user.id}`)}
-                  >
-                    Sửa
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500 dark:text-gray-200 focus:outline-none focus:shadow-outline-purple"
+                    className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                     onClick={() => navigate("/users")}
                   >
                     Quay lại

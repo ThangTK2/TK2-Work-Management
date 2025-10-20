@@ -17,25 +17,40 @@ use App\Http\Controllers\Api\UsersController;
 |
 */
 
-// Auth routes (không cần đăng nhập)
 Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
 });
 
-// Password routes
 Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
-// Routes cần đăng nhập
 // apiResource: tự động tạo đủ 5 route (index, show, store, update, destroy)
+// User & Admin đều có thể xem user, xem task (chỉ GET)
 Route::middleware('auth:sanctum')->group(function () {
-    // Task routes
-    Route::apiResource('tasks', TaskController::class);
+    // Xem danh sách User / xem chi tiết User
+    Route::get('/users', [UsersController::class, 'index']);
+    Route::get('/users/{id}', [UsersController::class, 'show']);
 
-    // User routes
-    Route::apiResource('users', UsersController::class);
+    // Chỉ xem danh sách Task, xem chi tiết Task
+    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::get('/tasks/{id}', [TaskController::class, 'show']);
 
     // Upload avatar
     Route::post('user/avatar', [AuthController::class, 'uploadAvatar']);
 });
+
+
+// Chỉ Admin mới được tạo / sửa / xóa User & Task
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+    // User
+    Route::post('/users', [UsersController::class, 'store']);
+    Route::put('/users/{id}', [UsersController::class, 'update']);
+    Route::delete('/users/{id}', [UsersController::class, 'destroy']);
+
+    // Task
+    Route::post('/tasks', [TaskController::class, 'store']);   // tạo task
+    Route::put('/tasks/{id}', [TaskController::class, 'update']); // sửa task
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy']); // xóa task
+});
+

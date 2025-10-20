@@ -9,6 +9,15 @@ import { toast } from "react-toastify";
 export default function TaskCreate() {
   const navigate = useNavigate();
 
+  // ✅ Kiểm tra role trước khi render form
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user.role !== "admin") {
+      toast.error("Bạn không có quyền tạo nhiệm vụ!");
+      navigate("/tasks");
+    }
+  }, [navigate]);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",

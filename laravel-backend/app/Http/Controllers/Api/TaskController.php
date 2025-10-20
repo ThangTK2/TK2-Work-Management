@@ -53,7 +53,7 @@ class TaskController extends Controller
 
     // Cập nhật task
     public function update(Request $request, $id)
-    {
+    { 
         $task = Task::find($id);
         if (!$task) {
             return response()->json(['message' => 'Task not found'], 404);

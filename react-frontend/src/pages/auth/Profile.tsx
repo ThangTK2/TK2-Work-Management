@@ -82,7 +82,6 @@ const Profile = () => {
           <div className="container px-6 mx-auto grid place-items-center">
             <div className="w-full max-w-md p-8 bg-white rounded-3xl shadow-xl dark:bg-gray-800">
               <div className="flex flex-col items-center space-y-6">
-                {/* Avatar */}
                 <div className="relative">
                   <img
                     className="object-cover w-32 h-32 rounded-full border-4 border-purple-500 cursor-pointer hover:opacity-90 transition"
@@ -113,17 +112,38 @@ const Profile = () => {
                   </div>
                 </div>
 
-                {/* Thông tin user */}
-                <div className="text-center">
+                <div className="text-center space-y-2 mb-2">
                   <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
                     {user.name}
                   </h2>
+
                   <p className="text-gray-500 dark:text-gray-400">
                     {user.email}
                   </p>
+
+                  <p
+                    className="inline-flex items-center px-4 py-1.5 font-semibold rounded-full shadow-md 
+    bg-gradient-to-r from-purple-500 to-pink-500 text-white backdrop-blur-sm"
+                    aria-label={`Vai trò: ${user.role || "User"}`}
+                  >
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 2a2 2 0 012 2v1h2a1 1 0 011 1v2h-1a3 3 0 00-3 3v1H9v-1a3 3 0 00-3-3H5V6a1 1 0 011-1h2V4a2 2 0 012-2z" />
+                    </svg>
+                    {user.role || "User"}
+                  </p>
+
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Tham gia từ:{" "}
+                    {user.created_at
+                      ? new Date(user.created_at).toLocaleDateString("vi-VN")
+                      : "Chưa có dữ liệu"}
+                  </p>
                 </div>
 
-                {/* Nút */}
                 <div className="flex gap-4 w-full mt-4">
                   <button
                     onClick={handleUpload}

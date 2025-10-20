@@ -11,7 +11,7 @@ class UsersController extends Controller
     // Lấy danh sách user
     public function index()
     {
-        $users = User::select('id', 'name', 'email')->get();
+        $users = User::all();
         return response()->json($users);
     }
 
