@@ -4,7 +4,7 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
-import type { User } from "../../hooks/UserContext";
+import { type User } from "../../hooks/UserContext";
 import { toast } from "react-toastify";
 
 const UserDetail = () => {
@@ -58,6 +58,20 @@ const UserDetail = () => {
                 <table className="w-full whitespace-no-wrap">
                   <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                     <tr>
+                      <td className="px-4 py-2 font-semibold">Hình ảnh</td>
+                      <td className="px-4 py-2">
+                        {user.avatar ? (
+                          <img
+                            src={`http://localhost:8000/storage/${user.avatar}`}
+                            alt="Image Avatar"
+                            className="w-24 h-24 rounded-full object-cover border-2 border-purple-500 shadow-lg"
+                          />
+                        ) : (
+                          <span className="text-gray-400">Không có ảnh</span>
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
                       <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                         ID
                       </td>
@@ -74,6 +88,12 @@ const UserDetail = () => {
                         Email
                       </td>
                       <td className="px-4 py-2">{user.email}</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
+                        Vai trò
+                      </td>
+                      <td className="px-4 py-2">{user.role}</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">

@@ -81,22 +81,23 @@ const UserList = () => {
                   <thead>
                     <tr className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                       <th className="px-4 py-3">ID</th>
+                      <th className="px-4 py-3">Hình ảnh</th>
                       <th className="px-4 py-3">Tên</th>
                       <th className="px-4 py-3">Email</th>
-                      <th className="px-4 py-3">Role</th>
+                      <th className="px-4 py-3">Vai trò</th>
                       <th className="px-4 py-3">Hành động</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                     {loading ? (
                       <tr>
-                        <td colSpan={5} className="px-4 py-3 text-center">
+                        <td colSpan={6} className="px-4 py-3 text-center">
                           Đang tải người dùng...
                         </td>
                       </tr>
                     ) : currentUsers.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="px-4 py-3 text-center">
+                        <td colSpan={6} className="px-4 py-3 text-center">
                           Không có người dùng nào được tìm thấy.
                         </td>
                       </tr>
@@ -107,6 +108,15 @@ const UserList = () => {
                           className="text-gray-700 dark:text-gray-400"
                         >
                           <td className="px-4 py-3">{index + 1}</td>
+                          <td className="px-4 py-3">
+                            <img
+                              src={
+                                (user.avatar = `http://localhost:8000/storage/${user.avatar}`)
+                              }
+                              alt={user.name}
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
+                          </td>
                           <td className="px-4 py-3">{user.name}</td>
                           <td className="px-4 py-3">{user.email}</td>
                           <td className="px-4 py-3">{user.role}</td>
