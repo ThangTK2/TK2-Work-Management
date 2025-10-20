@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserContext";
+import { toast } from "react-toastify";
 
 type HeaderProps = {
   onSearch?: (value: string) => void;
@@ -15,6 +16,7 @@ const Header = ({ onSearch }: HeaderProps) => {
     if (!window.confirm("Bạn có chắc muốn đăng xuất không?")) return;
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    toast.success("Đăng xuất thành công!");
     navigate("/user/login");
   };
 
@@ -60,7 +62,7 @@ const Header = ({ onSearch }: HeaderProps) => {
                 src={
                   user?.avatar
                     ? `http://localhost:8000/storage/${user.avatar}`
-                    : "https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&w=100&fit=max"
+                    : ""
                 }
                 alt="Avatar"
               />

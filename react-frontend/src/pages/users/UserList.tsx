@@ -111,7 +111,9 @@ const UserList = () => {
                           <td className="px-4 py-3">
                             <img
                               src={
-                                (user.avatar = `http://localhost:8000/storage/${user.avatar}`)
+                                user.avatar
+                                  ? `http://localhost:8000/storage/${user.avatar}`
+                                  : ""
                               }
                               alt={user.name}
                               className="w-10 h-10 rounded-full object-cover"

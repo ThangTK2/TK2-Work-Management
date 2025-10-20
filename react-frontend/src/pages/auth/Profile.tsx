@@ -68,9 +68,7 @@ const Profile = () => {
 
   const avatarUrl =
     previewUrl ||
-    (user.avatar
-      ? `http://localhost:8000/storage/${user.avatar}`
-      : "https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg");
+    (user.avatar ? `http://localhost:8000/storage/${user.avatar}` : "");
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">

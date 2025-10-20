@@ -5,13 +5,12 @@ import axiosClient from "../../lib/axiosClient";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
 import Footer from "../../components/Footer";
-import { useUser, type User } from "../../hooks/UserContext";
+import { type User } from "../../hooks/UserContext";
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { setUser } = useUser();
 
   const [formUser, setFormUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,10 +43,7 @@ const UserEdit = () => {
       await axiosClient.put(`/users/${id}`, formUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      setUser(formUser);
-      localStorage.setItem("user", JSON.stringify(formUser));
-
+      navigate("/users");
       toast.success("Cập nhật thành công!");
       navigate("/users");
     } catch (err: any) {

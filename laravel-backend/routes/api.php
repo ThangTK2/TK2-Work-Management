@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // Chỉ Admin mới được tạo / sửa / xóa User & Task
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {  //'role': middleware
     // User
     Route::post('/users', [UsersController::class, 'store']);
     Route::put('/users/{id}', [UsersController::class, 'update']);
